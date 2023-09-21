@@ -94,22 +94,22 @@ int main(void)
   int count_status = 1;
   while (1)
   {
-	  if( count_status == 5){
+	  if( count_status <= 5){
 		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
 		  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, SET);
 		  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, SET);
 	  }
-	  else if( count_status == 8){
+	  else if( count_status <= 8){
 		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, SET);
 		  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, SET);
 		  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, RESET);
 	  }
-	  else if( count_status == 10){
+	  else if( count_status <= 10){
 	  	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, SET);
 	  	  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, RESET);
 	  	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, SET);
 	  }
-	  if(count_status >10 ) count_status =0;
+	  if(count_status >10 ) count_status = 1;
 	  count_status ++;
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */

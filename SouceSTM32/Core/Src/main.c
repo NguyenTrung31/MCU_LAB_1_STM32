@@ -61,37 +61,7 @@ static void MX_GPIO_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
-{
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
-  SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  /* USER CODE BEGIN 2 */
-
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  void display7SEG(int num){
+void display7SEG(int num){
 	  if( num == 0){
 		  	  	  HAL_GPIO_WritePin(SEG_a_GPIO_Port, SEG_a_Pin, RESET);
 		  	  	  HAL_GPIO_WritePin(SEG_b_GPIO_Port, SEG_b_Pin, RESET);
@@ -194,12 +164,95 @@ int main(void)
 	  	  	  }
 
   }
-  int counter = 0;
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  /* USER CODE BEGIN 2 */
+  int count_status_ver = 1;
+  int count_status_hor = 1;
+  int count_down_dis7seg_ver = 0;
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+
+
   while (1)
   {
-	  if( counter >= 10) counter = 0;
-	  display7SEG(counter ++);
-	  HAL_Delay(1000);
+	  // VERTICAl
+	  	 	  if ( count_status_ver <= 5) {// LED RED UP LIGHT
+	  	 		  HAL_GPIO_WritePin(LED_RED_VER_GPIO_Port, LED_RED_VER_Pin, GPIO_PIN_RESET);
+	  	 		  HAL_GPIO_WritePin(LED_GREEN_VER_GPIO_Port, LED_GREEN_VER_Pin, GPIO_PIN_SET);
+	  	 		  HAL_GPIO_WritePin(LED_YELLOW_VER_GPIO_Port, LED_YELLOW_VER_Pin, GPIO_PIN_SET);
+	  	 		  count_down_dis7seg_ver = 5 - count_status_ver + 1;
+	  	 		  display7SEG(count_down_dis7seg_ver);
+	  	 		  count_status_ver++;
+	  	 	  }else if (count_status_ver <= 8){// LED GREEN UP LIGHT
+	  	 		  HAL_GPIO_WritePin(LED_RED_VER_GPIO_Port, LED_RED_VER_Pin, GPIO_PIN_SET);
+	  	 		  HAL_GPIO_WritePin(LED_YELLOW_VER_GPIO_Port, LED_YELLOW_VER_Pin, GPIO_PIN_SET);
+	  	 		  HAL_GPIO_WritePin(LED_GREEN_VER_GPIO_Port, LED_GREEN_VER_Pin, GPIO_PIN_RESET);
+	  	 		  count_down_dis7seg_ver = 8 - count_status_ver + 1;
+	  	 		  display7SEG(count_down_dis7seg_ver);
+	  	 		  count_status_ver++;
+	  	 	  }else if (count_status_ver <= 10){// LED YELLOW UP RIGHT
+	  	 		  HAL_GPIO_WritePin(LED_RED_VER_GPIO_Port, LED_RED_VER_Pin, GPIO_PIN_SET);
+	  	 		  HAL_GPIO_WritePin(LED_YELLOW_VER_GPIO_Port, LED_YELLOW_VER_Pin, GPIO_PIN_RESET);
+	  	 		  HAL_GPIO_WritePin(LED_GREEN_VER_GPIO_Port, LED_GREEN_VER_Pin, GPIO_PIN_SET);
+	  	 		  count_down_dis7seg_ver = 10 - count_status_ver + 1;
+	  	 		  display7SEG(count_down_dis7seg_ver);
+	  	 		  count_status_ver++;
+	  	 		  if (count_status_ver > 10) count_status_ver = 1;
+	  	 	  }
+
+	  	 	  //HORIZONTAL
+	  	 	  if ( count_status_hor <= 3) { // LED GREEN UP LIGHT
+	  	  		  HAL_GPIO_WritePin(LED_RED_HOR_GPIO_Port, LED_RED_HOR_Pin, GPIO_PIN_SET);
+	  	  		  HAL_GPIO_WritePin(LED_YELLOW_HOR_GPIO_Port, LED_YELLOW_HOR_Pin, GPIO_PIN_SET);
+	  	  		  HAL_GPIO_WritePin(LED_GREEN_HOR_GPIO_Port, LED_GREEN_HOR_Pin, GPIO_PIN_RESET);
+	  	 		  //count_down_dis7seg_hor = 3 - count_status_hor;
+	  	 		  //display7SEGHor(count_down_dis7seg_hor);
+	  	 	 	  count_status_hor++;
+	  	 	 	  }
+	  	 	  else if (count_status_hor <= 5){ //LED YELLOW UP LIGHT
+	  	 	 		  HAL_GPIO_WritePin(LED_RED_HOR_GPIO_Port, LED_RED_HOR_Pin, GPIO_PIN_SET);
+	  	 	 		  HAL_GPIO_WritePin(LED_YELLOW_HOR_GPIO_Port, LED_YELLOW_HOR_Pin, GPIO_PIN_RESET);
+	  	 	 		  HAL_GPIO_WritePin(LED_GREEN_HOR_GPIO_Port, LED_GREEN_HOR_Pin, GPIO_PIN_SET);
+	  		 		  //count_down_dis7seg_hor = 5 - count_status_hor;
+	  		 		  //(count_down_dis7seg_hor);
+	  	 	 		  count_status_hor++;
+	  	 	 	  }
+	  	 	  else if (count_status_hor <= 10){ //LED RED UP LIGHT
+	  	 	 		  HAL_GPIO_WritePin(LED_RED_HOR_GPIO_Port, LED_RED_HOR_Pin, GPIO_PIN_RESET);
+	  	 	 		  HAL_GPIO_WritePin(LED_GREEN_HOR_GPIO_Port, LED_GREEN_HOR_Pin, GPIO_PIN_SET);
+	  	 	 		  HAL_GPIO_WritePin(LED_YELLOW_HOR_GPIO_Port, LED_YELLOW_HOR_Pin, GPIO_PIN_SET);
+	  		 		  //count_down_dis7seg_hor = 10 - count_status_hor;
+	  		 		  //display7SEGHor(count_down_dis7seg_hor);
+	  	 	 		  count_status_hor++;
+	  	 	 		  if (count_status_hor > 10) count_status_hor = 1;
+	  	 	 	  }
+	  	 	  HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -252,11 +305,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, LED_RED_VER_Pin|LED_YELLOW_VER_Pin|LED_GREEN_VER_Pin|LED_RED_HOR_Pin
+                          |LED_YELLOW_HOR_Pin|LED_GREEN_HOR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SEG_a_Pin|SEG_b_Pin|SEG_c_Pin|SEG_d_Pin
                           |SEG_e_Pin|SEG_f_Pin|SEG_g_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : LED_RED_VER_Pin LED_YELLOW_VER_Pin LED_GREEN_VER_Pin LED_RED_HOR_Pin
+                           LED_YELLOW_HOR_Pin LED_GREEN_HOR_Pin */
+  GPIO_InitStruct.Pin = LED_RED_VER_Pin|LED_YELLOW_VER_Pin|LED_GREEN_VER_Pin|LED_RED_HOR_Pin
+                          |LED_YELLOW_HOR_Pin|LED_GREEN_HOR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SEG_a_Pin SEG_b_Pin SEG_c_Pin SEG_d_Pin
                            SEG_e_Pin SEG_f_Pin SEG_g_Pin */
